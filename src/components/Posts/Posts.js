@@ -81,6 +81,7 @@ class Posts extends Component {
     onEditPost = (message, text) => {
         this.props.firebase.posts(message.uid).set({
             ...message,
+            text,
             updatedAt: this.props.firebase.serverValue.TIMESTAMP,
         });
     };

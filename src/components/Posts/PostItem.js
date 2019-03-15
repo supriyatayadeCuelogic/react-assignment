@@ -6,19 +6,21 @@ class PostItem extends Component {
 
     this.state = {
       editMode: false,
-      editText: this.props.posts.title,
+      editText: this.props.posts.text,
+      editDesc: this.props.posts.description,
+      editAuthor: this.props.posts.author
     };
   }
 
   onToggleEditMode = () => {
     this.setState(state => ({
       editMode: !state.editMode,
-      editText: this.props.posts.title,
+      editText: this.props.posts.text,
     }));
   };
 
   onChangeEditTitle = event => {
-    this.setState({ editTitle: event.target.value });
+    this.setState({ editText: event.target.value });
   };
   onChangeEditDesc = event => {
     this.setState({ editDesc: event.target.value });
@@ -28,20 +30,20 @@ class PostItem extends Component {
   };
 
   onSaveEditText = () => {
-    this.props.onEditMessage(this.props.posts, this.state.editText);
+    this.props.onEditPost(this.props.posts, this.state.editText);
 
     this.setState({ editMode: false });
   };
 
   render() {
     const { posts, onRemoveMessage } = this.props;
-    const { editMode, editTitle,editDesc,editAuthor } = this.state;
+    const { editMode, editText,editDesc,editAuthor } = this.state;
 debugger;
     return (
       <li>
         {editMode ? (
           <div>
-            <input type="text" value={editTitle} onChange={this.onChangeEditTitle} />
+            <input type="text" value={editText} onChange={this.onChangeEditTitle} />
             <input type="text" value={editDesc} onChange={this.onChangeEditDesc} />
             <input type="text" value={editAuthor} onChange={this.onChangeEditAuthor} />
             
