@@ -21,7 +21,10 @@ const Navigation = () => (
 const NavigationAuth = ({ authUser }) => (
   <ul>
     <li>
-      <Link to={ROUTES.HOME}>Home</Link>
+      <Link to={ROUTES.HOME}>Manage Posts</Link>
+    </li>
+    <li>
+      <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
     </li>
     <li>
       <SignOutButton />

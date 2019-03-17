@@ -12,6 +12,8 @@ class Posts extends Component {
             title: '',
             description: '',
             author: '',
+            category:'',
+            status:'',
             loading: false,
             posts: [],
             limit: 5,
@@ -61,14 +63,21 @@ class Posts extends Component {
     onChangeAuthor = event => {
         this.setState({ author: event.target.value });
     }
-
+    onChangeCategory = event =>{
+        this.setState({category:event.target.value});
+    }
+    onChangeStatus = event =>{
+        this.setState({status:event.target.value});
+    }
 
     onCreateMessage = (event, authUser) => {
-        debugger;
+        
         this.props.firebase.posts().push({
             title: this.state.title,
             description: this.state.description,
             author: this.state.author,
+            category:this.state.category,
+            status:this.state.status,
             userId: authUser.uid,
             createdAt: this.props.firebase.serverValue.TIMESTAMP
         });
@@ -78,10 +87,11 @@ class Posts extends Component {
         event.preventDefault();
     };
 
-    onEditPost = (message, text) => {
+    onEditPost = (message, title) => {
+        debugger;
         this.props.firebase.posts(message.uid).set({
             ...message,
-            text,
+            title,
             updatedAt: this.props.firebase.serverValue.TIMESTAMP,
         });
     };
@@ -99,18 +109,12 @@ class Posts extends Component {
 
     render() {
         const { users } = this.props;
-        const { title,description,author, posts, loading } = this.state;
+        const { title,description,author,category,status, posts, loading } = this.state;
 
         return (
             <AuthUserContext.Consumer>
                 {authUser => (
                     <div>
-                        {!loading && posts && (
-                            <button type="button" onClick={this.onNextPage}>
-                                More
-              </button>
-                        )}
-
                         {loading && <div>Loading ...</div>}
 
                         {posts && (
@@ -118,8 +122,8 @@ class Posts extends Component {
                                 posts={posts.map(post => ({
                                     ...post,
                                     user: users
-                                        ? users[post.userId]
-                                        : { userId: post.userId },
+                                      ? users[post.userId]
+                                      : { userId: post.userId },
                                 }))}
                                 onEditPost={this.onEditPost}
                                 onRemovePost={this.onRemovePost}
@@ -128,20 +132,26 @@ class Posts extends Component {
 
                         {!posts && <div>There are no posts ...</div>}
 
-                        <form
-                            onSubmit={event =>
-                                this.onCreateMessage(event, authUser)
-                            }
-                        >
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={this.onChangeText}
-                            />
-                            <input type="text" value={description} onChange={this.onChangeDesc} />
-                            <input type="text" value={author} onChange={this.onChangeAuthor} />
-
-                            <button type="submit">Send</button>
+                        <form onSubmit={event => this.onCreateMessage(event, authUser) } >
+                            <input type="text" placeholder="Title" value={title} onChange={this.onChangeText} />
+                            <input type="text" placeholder="Description" value={description} onChange={this.onChangeDesc} />
+                            <input type="text" placeholder="Author" value={author} onChange={this.onChangeAuthor} />
+                            <select onChange={this.onChangeCategory} value={category}>
+                                <option value="select">Select</option>
+                                <option value="Blockchain">Blockchain</option>
+                                <option value="IoT">IoT</option>
+                                <option value="Game tech">Game tech</option>
+                                <option value="AI">AI</option>
+                                <option value="Robotics">Robotics</option>
+                                <option value="Machine">Machine</option>
+                                <option value="Learning">Learning</option>
+                            </select>
+                            <select onChange={this.onChangeStatus} value={status}>
+                                <option value="select">Select</option>
+                                <option value="Draft">Draft</option>
+                                <option value="Published">Published</option>
+                            </select>
+                            <button type="submit">Save</button>
                         </form>
                     </div>
                 )}

@@ -6,21 +6,27 @@ class PostItem extends Component {
 
     this.state = {
       editMode: false,
-      editText: this.props.posts.text,
+      editTitle: this.props.posts.title,
       editDesc: this.props.posts.description,
-      editAuthor: this.props.posts.author
+      editAuthor: this.props.posts.author,
+      editCategory:this.props.posts.category,
+      editStatus:this.props.posts.status
     };
   }
 
   onToggleEditMode = () => {
     this.setState(state => ({
       editMode: !state.editMode,
-      editText: this.props.posts.text,
+      editTitle: this.props.posts.title,
+      editDesc: this.props.posts.description,
+      editAuthor: this.props.posts.author,
+      editCategory: this.props.posts.category,
+      editStatus: this.props.posts.status,
     }));
   };
 
   onChangeEditTitle = event => {
-    this.setState({ editText: event.target.value });
+    this.setState({ editTitle: event.target.value });
   };
   onChangeEditDesc = event => {
     this.setState({ editDesc: event.target.value });
@@ -28,30 +34,50 @@ class PostItem extends Component {
   onChangeEditAuthor = event => {
     this.setState({ editAuthor: event.target.value });
   };
+  onChangeEditCategory = event => {
+    this.setState({ editCategory: event.target.value });
+  };
+  onChangeEditStatus = event => {
+    this.setState({ editStatus: event.target.value });
+  };
 
   onSaveEditText = () => {
-    this.props.onEditPost(this.props.posts, this.state.editText);
+    this.props.onEditPost(this.props.posts,this.state.editTitle);
 
     this.setState({ editMode: false });
   };
 
   render() {
     const { posts, onRemoveMessage } = this.props;
-    const { editMode, editText,editDesc,editAuthor } = this.state;
-debugger;
+    const { editMode, editTitle,editDesc,editAuthor,editCategory,editStatus } = this.state;
+
     return (
       <li>
         {editMode ? (
           <div>
-            <input type="text" value={editText} onChange={this.onChangeEditTitle} />
-            <input type="text" value={editDesc} onChange={this.onChangeEditDesc} />
-            <input type="text" value={editAuthor} onChange={this.onChangeEditAuthor} />
-            
+            <input type="text" placeholder="Title" value={editTitle} onChange={this.onChangeEditTitle} />
+            <input type="text" placeholder="Description" value={editDesc} onChange={this.onChangeEditDesc} />
+            <input type="text" placeholder="Author" value={editAuthor} onChange={this.onChangeEditAuthor} />
+            <select onChange={this.onChangeEditCategory} value={editCategory}>
+              <option value="select">Select</option>
+              <option value="Blockchain">Blockchain</option>
+              <option value="IoT">IoT</option>
+              <option value="Game tech">Game tech</option>
+              <option value="AI">AI</option>
+              <option value="Robotics">Robotics</option>
+              <option value="Machine">Machine</option>
+              <option value="Learning">Learning</option>
+          </select>
+          <select onChange={this.onChangeEditStatus} value={editStatus}>
+              <option value="select">Select</option>
+              <option value="Draft">Draft</option>
+              <option value="Published">Published</option>
+          </select>
 
           </div>
         ) : (
           <span>            
-            {posts.text} {posts.editedAt && <span>(Edited)</span>}
+            {posts.title} {posts.editedAt && <span>(Edited)</span>}
           </span>
         )}
 

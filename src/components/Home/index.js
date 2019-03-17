@@ -30,9 +30,8 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <h1>Home Page</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
-
+        <h1>Posts</h1>
+        
         {/* <Messages users={this.state.users} /> */}
         <Posts users={this.state.users} />
       </div>
