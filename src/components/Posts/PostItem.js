@@ -42,13 +42,15 @@ class PostItem extends Component {
   };
 
   onSaveEditText = () => {
-    this.props.onEditPost(this.props.posts,this.state.editTitle);
+    this.props.onEditPost(this.props.posts,this.state.editTitle,this.state.editDesc,
+      this.state.editAuthor, this.state.editCategory,this.state.editStatus);
 
     this.setState({ editMode: false });
   };
 
   render() {
-    const { posts, onRemoveMessage } = this.props;
+    
+    const { posts, onRemovePost } = this.props;
     const { editMode, editTitle,editDesc,editAuthor,editCategory,editStatus } = this.state;
 
     return (
@@ -93,7 +95,7 @@ class PostItem extends Component {
         {!editMode && (
           <button
             type="button"
-            onClick={() => onRemoveMessage(posts.uid)}
+            onClick={() => onRemovePost(posts.uid)}
           >
             Delete
           </button>

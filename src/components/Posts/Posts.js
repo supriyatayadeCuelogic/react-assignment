@@ -12,11 +12,12 @@ class Posts extends Component {
             title: '',
             description: '',
             author: '',
-            category:'',
-            status:'',
+            category: '',
+            status: '',
             loading: false,
             posts: [],
             limit: 5,
+            formValid: true
         };
     }
 
@@ -63,35 +64,43 @@ class Posts extends Component {
     onChangeAuthor = event => {
         this.setState({ author: event.target.value });
     }
-    onChangeCategory = event =>{
-        this.setState({category:event.target.value});
+    onChangeCategory = event => {
+        this.setState({ category: event.target.value });
     }
-    onChangeStatus = event =>{
-        this.setState({status:event.target.value});
+    onChangeStatus = event => {
+        this.setState({ status: event.target.value });
     }
 
     onCreateMessage = (event, authUser) => {
-        
-        this.props.firebase.posts().push({
-            title: this.state.title,
-            description: this.state.description,
-            author: this.state.author,
-            category:this.state.category,
-            status:this.state.status,
-            userId: authUser.uid,
-            createdAt: this.props.firebase.serverValue.TIMESTAMP
-        });
 
-        this.setState({ text: '', description: '', author: '' });
+        if (this.state.title === "" || this.state.description === "" ||
+            this.state.category === "" || this.state.author === "" || this.state.status === "") {
+            this.setState({
+                formValid: false
+            })
+            console.log(this.state);
+        } else {
+            this.props.firebase.posts().push({
+                title: this.state.title,
+                description: this.state.description,
+                author: this.state.author,
+                category: this.state.category,
+                status: this.state.status,
+                userId: authUser.uid,
+                createdAt: this.props.firebase.serverValue.TIMESTAMP
+            });
 
-        event.preventDefault();
+            this.setState({ title: '', description: '', author: '', category: '', status: '' });
+
+            event.preventDefault();
+        }
     };
 
-    onEditPost = (message, title) => {
-        debugger;
+    onEditPost = (message, title,description,author,category,status) => {
+
         this.props.firebase.posts(message.uid).set({
             ...message,
-            title,
+            title,description,author,category,status,
             updatedAt: this.props.firebase.serverValue.TIMESTAMP,
         });
     };
@@ -109,7 +118,7 @@ class Posts extends Component {
 
     render() {
         const { users } = this.props;
-        const { title,description,author,category,status, posts, loading } = this.state;
+        const { title, description, author, category, status, posts, loading,formValid } = this.state;
 
         return (
             <AuthUserContext.Consumer>
@@ -122,8 +131,8 @@ class Posts extends Component {
                                 posts={posts.map(post => ({
                                     ...post,
                                     user: users
-                                      ? users[post.userId]
-                                      : { userId: post.userId },
+                                        ? users[post.userId]
+                                        : { userId: post.userId },
                                 }))}
                                 onEditPost={this.onEditPost}
                                 onRemovePost={this.onRemovePost}
@@ -132,12 +141,13 @@ class Posts extends Component {
 
                         {!posts && <div>There are no posts ...</div>}
 
-                        <form onSubmit={event => this.onCreateMessage(event, authUser) } >
-                            <input type="text" placeholder="Title" value={title} onChange={this.onChangeText} />
-                            <input type="text" placeholder="Description" value={description} onChange={this.onChangeDesc} />
-                            <input type="text" placeholder="Author" value={author} onChange={this.onChangeAuthor} />
-                            <select onChange={this.onChangeCategory} value={category}>
-                                <option value="select">Select</option>
+                        <form onSubmit={event => this.onCreateMessage(event, authUser)} >
+                            {!formValid ? <p>All fields are required</p> : null}    
+                            <input type="text" placeholder="Title" name="title" value={title} onChange={this.onChangeText} />
+                            <input type="text" placeholder="Description" name="description" value={description} onChange={this.onChangeDesc} />
+                            <input type="text" placeholder="Author" name="author" value={author} onChange={this.onChangeAuthor} />
+                            <select onChange={this.onChangeCategory} name="category" value={category}>
+                                <option value="">Select</option>
                                 <option value="Blockchain">Blockchain</option>
                                 <option value="IoT">IoT</option>
                                 <option value="Game tech">Game tech</option>
@@ -146,12 +156,12 @@ class Posts extends Component {
                                 <option value="Machine">Machine</option>
                                 <option value="Learning">Learning</option>
                             </select>
-                            <select onChange={this.onChangeStatus} value={status}>
-                                <option value="select">Select</option>
+                            <select onChange={this.onChangeStatus} name="status" value={status}>
+                                <option value="">Select</option>
                                 <option value="Draft">Draft</option>
                                 <option value="Published">Published</option>
                             </select>
-                            <button type="submit">Save</button>
+                            <button type="submit" disabled={!this.state.formValid}>Save</button>
                         </form>
                     </div>
                 )}

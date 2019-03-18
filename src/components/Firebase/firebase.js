@@ -90,9 +90,9 @@ class Firebase {
 
   messages = () => this.db.ref('messages');
 
-  posts = () => this.db.ref('posts');
-
   post = uid => this.db.ref(`posts/${uid}`);
+
+  posts = () => this.db.ref('posts');
 }
 
 export default Firebase;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link,Route } from 'react-router-dom';
 
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
-import * as ROLES from '../../constants/roles';
+import DoughnutChrt from './../Dashboard/';
 
 const Navigation = () => (
   <AuthUserContext.Consumer>
@@ -25,6 +25,7 @@ const NavigationAuth = ({ authUser }) => (
     </li>
     <li>
       <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
+      <Route path="/dashboard" component={DoughnutChrt}/> 
     </li>
     <li>
       <SignOutButton />
