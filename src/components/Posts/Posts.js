@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import PostList from './PostList';
+import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
 
 class Posts extends Component {
     constructor(props) {
@@ -98,7 +100,7 @@ class Posts extends Component {
 
     onEditPost = (message, title,description,author,category,status) => {
 
-        this.props.firebase.posts(message.uid).set({
+        this.props.firebase.post(message.uid).set({
             ...message,
             title,description,author,category,status,
             updatedAt: this.props.firebase.serverValue.TIMESTAMP,
@@ -106,7 +108,7 @@ class Posts extends Component {
     };
 
     onRemovePost = uid => {
-        this.props.firebase.posts(uid).remove();
+        this.props.firebase.post(uid).remove();
     };
 
     onNextPage = () => {
@@ -143,9 +145,9 @@ class Posts extends Component {
 
                         <form onSubmit={event => this.onCreateMessage(event, authUser)} >
                             {!formValid ? <p>All fields are required</p> : null}    
-                            <input type="text" placeholder="Title" name="title" value={title} onChange={this.onChangeText} />
-                            <input type="text" placeholder="Description" name="description" value={description} onChange={this.onChangeDesc} />
-                            <input type="text" placeholder="Author" name="author" value={author} onChange={this.onChangeAuthor} />
+                            <input type="text" placeholder="Title" name="title" value={title} onChange={this.onChangeText} validations={[required]} />
+                            <input type="text" placeholder="Description" name="description" value={description} onChange={this.onChangeDesc} validations={[required]} />
+                            <input type="text" placeholder="Author" name="author" value={author} onChange={this.onChangeAuthor} validations={[required]} />
                             <select onChange={this.onChangeCategory} name="category" value={category}>
                                 <option value="">Select</option>
                                 <option value="Blockchain">Blockchain</option>
