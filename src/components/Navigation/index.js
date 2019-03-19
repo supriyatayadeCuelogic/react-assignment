@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link,Route } from 'react-router-dom';
-
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
@@ -11,25 +10,26 @@ const Navigation = () => (
       authUser ? (
         <NavigationAuth authUser={authUser} />
       ) : (
-        <NavigationNonAuth />
-      )
+          <NavigationNonAuth />
+        )
     }
   </AuthUserContext.Consumer>
 );
 
 const NavigationAuth = ({ authUser }) => (
-  <ul>
-    <li>
-      <Link to={ROUTES.HOME}>Manage Posts</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
-      {/* <Route path="/dashboard" component={DoughnutChrt}/>  */}
-    </li>
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+  <div>
+    <ul className="flex-column">
+      <li>
+        <Link to={ROUTES.HOME}>Manage Posts</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
+      </li>
+      <li>
+        <SignOutButton />
+      </li>
+    </ul>    
+  </div>
 );
 
 const NavigationNonAuth = () => (

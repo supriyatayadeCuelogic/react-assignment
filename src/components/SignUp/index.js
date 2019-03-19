@@ -82,7 +82,6 @@ class SignUpFormBase extends Component {
       email,
       passwordOne,
       passwordTwo,
-      isAdmin,
       error,
     } = this.state;
 
@@ -94,47 +93,29 @@ class SignUpFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
+      <div className="form-group col-md-6">
+        <label>Full Name</label>
+        <input name="username" className="form-control" value={username} onChange={this.onChange} type="text" />
+        <label>Email</label>
+        <input name="email" className="form-control" value={email} onChange={this.onChange} type="text" />
+        <label>Password</label>
+        <input name="passwordOne" className="form-control" value={passwordOne} onChange={this.onChange} type="password" />
+        <label>Confirm password</label>
+        <input name="passwordTwo" className="form-control" value={passwordTwo} onChange={this.onChange} type="password" />
         
-        <button disabled={isInvalid} type="submit">
+        <button disabled={isInvalid} type="submit" className="btn btn-primary">
           Sign Up
         </button>
 
         {error && <p>{error.message}</p>}
+        </div>
       </form>
     );
   }
 }
 
 const SignUpLink = () => (
-  <p>
+  <p className="btn btn-primary">
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
   </p>
 );

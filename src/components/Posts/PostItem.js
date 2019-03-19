@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import SimpleReactValidator from 'simple-react-validator';
+import './Post.css';
 
 class PostItem extends Component {
   constructor(props) {
@@ -9,9 +11,11 @@ class PostItem extends Component {
       editTitle: this.props.posts.title,
       editDesc: this.props.posts.description,
       editAuthor: this.props.posts.author,
-      editCategory:this.props.posts.category,
-      editStatus:this.props.posts.status
+      editCategory: this.props.posts.category,
+      editStatus: this.props.posts.status
     };
+
+    this.validator = new SimpleReactValidator();
   }
 
   onToggleEditMode = () => {
@@ -31,9 +35,7 @@ class PostItem extends Component {
   onChangeEditDesc = event => {
     this.setState({ editDesc: event.target.value });
   };
-  onChangeEditAuthor = event => {
-    this.setState({ editAuthor: event.target.value });
-  };
+  
   onChangeEditCategory = event => {
     this.setState({ editCategory: event.target.value });
   };
@@ -42,26 +44,32 @@ class PostItem extends Component {
   };
 
   onSaveEditText = () => {
-    this.props.onEditPost(this.props.posts,this.state.editTitle,this.state.editDesc,
-      this.state.editAuthor, this.state.editCategory,this.state.editStatus);
+    if (this.validator.allValid()) {
+      this.props.onEditPost(this.props.posts, this.state.editTitle, this.state.editDesc,this.state.editCategory, this.state.editStatus);
 
-    this.setState({ editMode: false });
+      this.setState({ editMode: false });
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   };
 
   render() {
-    
+
     const { posts, onRemovePost } = this.props;
-    const { editMode, editTitle,editDesc,editAuthor,editCategory,editStatus } = this.state;
+    const { editMode, editTitle, editDesc, editCategory, editStatus } = this.state;
 
     return (
       <li>
         {editMode ? (
-          <div>
-            <input type="text" placeholder="Title" value={editTitle} onChange={this.onChangeEditTitle} />
-            <input type="text" placeholder="Description" value={editDesc} onChange={this.onChangeEditDesc} />
-            <input type="text" placeholder="Author" value={editAuthor} onChange={this.onChangeEditAuthor} />
-            <select onChange={this.onChangeEditCategory} value={editCategory}>
-              <option value="select">Select</option>
+          <div className="form-group col-md-6">
+            <label>Title</label>
+            <input type="text" className="form-control" value={editTitle} onChange={this.onChangeEditTitle} />
+            <label>Description</label>
+            <input type="text" className="form-control" value={editDesc} onChange={this.onChangeEditDesc} />
+            <label>Category</label>
+            <select onChange={this.onChangeEditCategory} className="form-control" value={editCategory}>
+              <option value="">Select</option>
               <option value="Blockchain">Blockchain</option>
               <option value="IoT">IoT</option>
               <option value="Game tech">Game tech</option>
@@ -69,36 +77,32 @@ class PostItem extends Component {
               <option value="Robotics">Robotics</option>
               <option value="Machine">Machine</option>
               <option value="Learning">Learning</option>
-          </select>
-          <select onChange={this.onChangeEditStatus} value={editStatus}>
-              <option value="select">Select</option>
+            </select>
+            <label>Status</label>
+            <select onChange={this.onChangeEditStatus} className="form-control" value={editStatus}>
+              <option value="">Select</option>
               <option value="Draft">Draft</option>
               <option value="Published">Published</option>
-          </select>
+            </select>
 
           </div>
         ) : (
-          <span>            
-            {posts.title} {posts.editedAt && <span>(Edited)</span>}
-          </span>
-        )}
+            <label><span>
+              {posts.title} {posts.editedAt && <span>(Edited)</span>}
+            </span></label>
+          )}
 
         {editMode ? (
           <span>
-            <button onClick={this.onSaveEditText}>Save</button>
-            <button onClick={this.onToggleEditMode}>Reset</button>
+            <button onClick={this.onSaveEditText} className="btn btn-primary editBtn">Save</button>
+            <button onClick={this.onToggleEditMode} className="btn btn-primary">Reset</button>
           </span>
         ) : (
-          <button onClick={this.onToggleEditMode}>Edit</button>
-        )}
+            <button onClick={this.onToggleEditMode} className="btn btn-primary editBtn">Edit</button>
+          )}
 
         {!editMode && (
-          <button
-            type="button"
-            onClick={() => onRemovePost(posts.uid)}
-          >
-            Delete
-          </button>
+          <button type="button" onClick={() => onRemovePost(posts.uid)} className="btn btn-primary">  Delete </button>
         )}
       </li>
     );

@@ -3,7 +3,6 @@ import { compose } from 'recompose';
 
 import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
-import Messages from '../Messages';
 import Posts  from '../Posts'
 
 class HomePage extends Component {
@@ -30,9 +29,7 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <h1>Posts</h1>
-        
-        {/* <Messages users={this.state.users} /> */}
+        <h1>Posts</h1>        
         <Posts users={this.state.users} />
       </div>
     );

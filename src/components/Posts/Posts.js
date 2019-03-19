@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import PostList from './PostList';
-import Form from 'react-validation/build/form';
-import Input from 'react-validation/build/input';
+import SimpleReactValidator from 'simple-react-validator';
+
+import { Link } from 'react-router-dom';
+
 
 class Posts extends Component {
     constructor(props) {
@@ -18,9 +20,10 @@ class Posts extends Component {
             status: '',
             loading: false,
             posts: [],
-            limit: 5,
-            formValid: true
+            limit: 5
         };
+
+        this.validator = new SimpleReactValidator();
     }
 
     componentDidMount() {
@@ -57,59 +60,7 @@ class Posts extends Component {
         this.props.firebase.posts().off();
     }
 
-    onChangeText = event => {
-        this.setState({ title: event.target.value });
-    };
-    onChangeDesc = event => {
-        this.setState({ description: event.target.value });
-    }
-    onChangeAuthor = event => {
-        this.setState({ author: event.target.value });
-    }
-    onChangeCategory = event => {
-        this.setState({ category: event.target.value });
-    }
-    onChangeStatus = event => {
-        this.setState({ status: event.target.value });
-    }
-
-    onCreateMessage = (event, authUser) => {
-
-        if (this.state.title === "" || this.state.description === "" ||
-            this.state.category === "" || this.state.author === "" || this.state.status === "") {
-            this.setState({
-                formValid: false
-            })
-            console.log(this.state);
-        } else {
-            this.props.firebase.posts().push({
-                title: this.state.title,
-                description: this.state.description,
-                author: this.state.author,
-                category: this.state.category,
-                status: this.state.status,
-                userId: authUser.uid,
-                createdAt: this.props.firebase.serverValue.TIMESTAMP
-            });
-
-            this.setState({ title: '', description: '', author: '', category: '', status: '' });
-
-            event.preventDefault();
-        }
-    };
-
-    onEditPost = (message, title,description,author,category,status) => {
-
-        this.props.firebase.post(message.uid).set({
-            ...message,
-            title,description,author,category,status,
-            updatedAt: this.props.firebase.serverValue.TIMESTAMP,
-        });
-    };
-
-    onRemovePost = uid => {
-        this.props.firebase.post(uid).remove();
-    };
+    
 
     onNextPage = () => {
         this.setState(
@@ -120,12 +71,12 @@ class Posts extends Component {
 
     render() {
         const { users } = this.props;
-        const { title, description, author, category, status, posts, loading,formValid } = this.state;
+        const { posts, loading} = this.state;
 
         return (
             <AuthUserContext.Consumer>
                 {authUser => (
-                    <div>
+                    <div className="container">
                         {loading && <div>Loading ...</div>}
 
                         {posts && (
@@ -143,28 +94,7 @@ class Posts extends Component {
 
                         {!posts && <div>There are no posts ...</div>}
 
-                        <form onSubmit={event => this.onCreateMessage(event, authUser)} >
-                            {!formValid ? <p>All fields are required</p> : null}    
-                            <input type="text" placeholder="Title" name="title" value={title} onChange={this.onChangeText} validations={[required]} />
-                            <input type="text" placeholder="Description" name="description" value={description} onChange={this.onChangeDesc} validations={[required]} />
-                            <input type="text" placeholder="Author" name="author" value={author} onChange={this.onChangeAuthor} validations={[required]} />
-                            <select onChange={this.onChangeCategory} name="category" value={category}>
-                                <option value="">Select</option>
-                                <option value="Blockchain">Blockchain</option>
-                                <option value="IoT">IoT</option>
-                                <option value="Game tech">Game tech</option>
-                                <option value="AI">AI</option>
-                                <option value="Robotics">Robotics</option>
-                                <option value="Machine">Machine</option>
-                                <option value="Learning">Learning</option>
-                            </select>
-                            <select onChange={this.onChangeStatus} name="status" value={status}>
-                                <option value="">Select</option>
-                                <option value="Draft">Draft</option>
-                                <option value="Published">Published</option>
-                            </select>
-                            <button type="submit" disabled={!this.state.formValid}>Save</button>
-                        </form>
+                        <Link to="/newpost">Add new post</Link>
                     </div>
                 )}
             </AuthUserContext.Consumer>
