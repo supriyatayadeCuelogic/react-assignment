@@ -7,7 +7,8 @@ import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 
 import HomePage from '../Home';
-
+import AddPost from './../Posts/AddPost';
+import DoughnutChrt from './../Dashboard';
 
 
 import * as ROUTES from '../../constants/routes';
@@ -25,6 +26,8 @@ const App = () => (
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
       
       <Route path={ROUTES.HOME} component={HomePage} />
+      <Route path={ROUTES.NEW_POST} component={AddPost} />
+      <Route path={ROUTES.DASHBOARD} component={DoughnutChrt} />
       
     </div>
   </Router>

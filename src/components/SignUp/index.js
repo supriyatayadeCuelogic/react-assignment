@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-import * as ROLES from '../../constants/roles';
 
 const SignUpPage = () => (
   <div>
@@ -34,12 +33,8 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne, isAdmin } = this.state;
+    const { username, email, passwordOne } = this.state;
     const roles = [];
-
-    if (isAdmin) {
-      roles.push(ROLES.ADMIN);
-    }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -51,11 +46,9 @@ class SignUpFormBase extends Component {
         });
       })
       .then(() => {
-        return this.props.firebase.doSendEmailVerification();
-      })
-      .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
+        //window.location.href='/home';
       })
       .catch(error => {
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
@@ -115,7 +108,7 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpLink = () => (
-  <p className="btn btn-primary">
+  <p className="">
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
   </p>
 );

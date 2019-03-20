@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 
 import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
-import Posts  from '../Posts'
+import Posts  from '../Posts';
 
 class HomePage extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class HomePage extends Component {
     this.props.firebase.users().off();
   }
 
-  render() {
+  render() {    
     return (
       <div>
         <h1>Posts</h1>        

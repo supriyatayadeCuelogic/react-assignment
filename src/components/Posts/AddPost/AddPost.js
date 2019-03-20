@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { AuthUserContext } from '../Session';
-import { withFirebase } from '../Firebase';
+import { AuthUserContext } from './../../Session';
+import { withFirebase } from './../../Firebase';
 import SimpleReactValidator from 'simple-react-validator';
+
 
 class AddPost extends Component {
     constructor(props) {
@@ -38,7 +39,6 @@ class AddPost extends Component {
     onCreateMessage = (event, authUser) => {
 
         if (this.validator.allValid()) {
-            debugger;
             this.props.firebase.posts().push({
                 title: this.state.title,
                 description: this.state.description,
@@ -51,23 +51,14 @@ class AddPost extends Component {
             this.setState({ title: '', description: '', author: '', category: '', status: '' });
 
             event.preventDefault();
+            window.location.href='/home';
         } else {
             this.validator.showMessages();
             this.forceUpdate();
         }
     };
 
-    onEditPost = (message, title, description, category, status) => {
-        this.props.firebase.post(message.uid).set({
-            ...message,
-            title, description, category, status,
-            updatedAt: this.props.firebase.serverValue.TIMESTAMP,
-        });
-    };
-
-    onRemovePost = uid => {
-        this.props.firebase.post(uid).remove();
-    };
+    
 
 
     render() {

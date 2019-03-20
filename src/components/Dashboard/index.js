@@ -3,6 +3,8 @@ import { compose } from 'recompose';
 import PieChart from './PieChart';
 
 import DoughnutChart from './DoughnutChart';
+
+import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 
 class DoughnutChrt extends Component {
@@ -27,4 +29,9 @@ class DoughnutChrt extends Component {
     }
 }
 
-export default compose(withFirebase)(DoughnutChrt,PieChart);
+const condition = authUser => !!authUser;
+export default compose(
+    withFirebase,
+    withEmailVerification,
+    withAuthorization(condition),
+  )(DoughnutChrt,PieChart);

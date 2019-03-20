@@ -47,7 +47,6 @@ class PieChart extends Component {
 					}
 					
 					if(data){
-						let chartArr = [];
 						let authorCount = 0;
 						let postCount = messageList.length;
 						

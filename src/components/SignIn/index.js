@@ -56,25 +56,27 @@ class SignInFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
+      <div className="form-group col-md-6">
         <input
-          name="email"
+          name="email" className="form-control" 
           value={email}
           onChange={this.onChange}
           type="text"
           placeholder="Email Address"
         />
         <input
-          name="password"
+          name="password" className="form-control" 
           value={password}
           onChange={this.onChange}
           type="password"
           placeholder="Password"
         />
-        <button disabled={isInvalid} type="submit">
+        <button disabled={isInvalid} type="submit" className="btn btn-primary">
           Sign In
         </button>
 
         {error && <p>{error.message}</p>}
+        </div>
       </form>
     );
   }

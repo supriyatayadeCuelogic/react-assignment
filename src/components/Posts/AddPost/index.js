@@ -1,14 +1,12 @@
 import AddPost from './AddPost';
-import React, { Component } from 'react';
 import { compose } from 'recompose';
+import { withFirebase } from './../../Firebase';
 
-class AddPost extends Component{
-    constructor(props) {
-        super(props);    
-    }
-    render(){
-        <AddPost />
-    }
-}
+import { withAuthorization, withEmailVerification } from './../../Session';
 
-export default compose(withFirebase)(AddPost);
+const condition = authUser => !!authUser;
+export default compose(
+    withFirebase,
+    withEmailVerification,
+    withAuthorization(condition),
+  )(AddPost);
