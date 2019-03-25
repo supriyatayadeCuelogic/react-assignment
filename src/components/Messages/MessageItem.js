@@ -6,45 +6,96 @@ class MessageItem extends Component {
 
     this.state = {
       editMode: false,
-      editText: this.props.message.text,
+      editTitle: this.props.message.text,
+      editDescription: this.props.message.description,
+      editCategory:this.props.message.category,
+      editStatus: this.props.message.status
     };
   }
 
   onToggleEditMode = () => {
     this.setState(state => ({
       editMode: !state.editMode,
-      editText: this.props.message.text,
+      editTitle: this.props.message.title,
+      editDescription: this.props.message.description,
+      editCategory:this.props.message.category,
+      editStatus: this.props.message.status
+      
     }));
   };
 
   onChangeEditText = event => {
-    this.setState({ editText: event.target.value });
+    this.setState({ editTitle: event.target.value });
+  };
+
+  onChangeEditDescription = event => {
+    this.setState({ editDescription: event.target.value });
+  };
+
+  onChangeEditCategory = event => {
+    this.setState({ editCategory: event.target.value });
+  };
+
+  onChangeEditStatus = event => {
+    this.setState({ editStatus: event.target.value });
   };
 
   onSaveEditText = () => {
-    this.props.onEditMessage(this.props.message, this.state.editText);
-
+    this.props.onEditMessage(
+      this.props.message, 
+      this.state.editTitle,
+      this.state.editDescription,
+      this.state.editCategory,
+      this.state.editStatus
+    );
     this.setState({ editMode: false });
   };
+  
 
   render() {
     const { message, onRemoveMessage } = this.props;
-    const { editMode, editText } = this.state;
+    const { editMode, editTitle, editDescription, editCategory, editStatus } = this.state;
 
     return (
       <li>
         {editMode ? (
+          <div>
           <input
             type="text"
-            value={editText}
+            value={editTitle}
             onChange={this.onChangeEditText}
           />
+          <textarea
+            type="text"
+            value={editDescription}
+            placeholder="Description"
+            onChange={this.onChangeEditDescription}
+          />
+          <select value={editCategory} onChange={this.onChangeEditCategory}>
+            <option>Category</option>
+            <option value="Blockchain" >Blockchain</option>
+            <option value="IoT">IoT</option>
+            <option value="Game tech">Game tech</option>
+            <option value="AI">AI</option>
+            <option value="Robotics">Robotics</option>
+          </select>
+          <br></br>
+          <input type="radio" name="status" 
+                                   value='draft'
+                                   checked={editStatus === 'draft'} 
+                                   onChange={this.onChangeEditStatus} />Draft
+          <input type="radio" name="status" 
+                                   value='published'
+                                   checked={editStatus === 'published'} 
+                                   onChange={this.onChangeEditStatus} />Published
+          </div>
+          
         ) : (
           <span>
             <strong>
               {message.user.username || message.user.userId}
             </strong>{' '}
-            {message.text} {message.editedAt && <span>(Edited)</span>}
+            {message.title}
           </span>
         )}
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
+import store from './store';
 import App from './components/App';
 import Firebase, { FirebaseContext } from './components/Firebase';
 
@@ -44,11 +46,13 @@ class ErrorBoundary extends React.Component {
 }
 
 ReactDOM.render(
-  <FirebaseContext.Provider value={new Firebase()}>
-  <ErrorBoundary>
-    <App />
-    </ErrorBoundary>
-  </FirebaseContext.Provider>,
+  <Provider store={store}>
+    <FirebaseContext.Provider value={new Firebase()}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </FirebaseContext.Provider>
+  </Provider>,
   document.getElementById('root'),
 );
 

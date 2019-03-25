@@ -44,7 +44,8 @@ class AddPost extends Component {
                 description: this.state.description,
                 category: this.state.category,
                 status: this.state.status,
-                author: authUser.uid,
+                userId: authUser.uid,
+                author: authUser.username,
                 createdAt: this.props.firebase.serverValue.TIMESTAMP
             });
 

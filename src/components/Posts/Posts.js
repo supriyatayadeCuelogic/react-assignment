@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
@@ -26,8 +28,17 @@ class Posts extends Component {
     }
 
     componentDidMount() {
+        if (!this.props.posts) {
+            this.setState({ loading: true });
+        }
         this.onListenForMessages();
     }
+
+    componentDidUpdate(props) {
+        if (props.limit !== this.props.limit) {
+          this.onListenForMessages();
+        }
+      }
 
     onListenForMessages = () => {
         this.setState({ loading: true });
@@ -35,9 +46,11 @@ class Posts extends Component {
 
         this.props.firebase
             .posts()
-            .orderByChild('author').equalTo(userDetails.uid)
+            .orderByChild('userId').equalTo(userDetails.uid)
             .limitToLast(this.state.limit)
             .on('value', snapshot => {
+                this.props.onSetMessages(snapshot.val());
+
                 const messageObject = snapshot.val();
 
                 if (messageObject) {
@@ -73,15 +86,12 @@ class Posts extends Component {
     };
 
     onNextPage = () => {
-        this.setState(
-            state => ({ limit: state.limit + 5 }),
-            this.onListenForMessages,
-        );
+        this.props.onSetMessagesLimit(this.props.limit + 5);
     };
 
     render() {
         const { users } = this.props;
-        const { posts, loading} = this.state;
+        const { posts, loading } = this.state;
 
         return (
             <AuthUserContext.Consumer>
@@ -90,8 +100,8 @@ class Posts extends Component {
                         {loading && <div>Loading ...</div>}
 
                         <Link to="/newpost">Add new post</Link>
-                        
-                        {posts && (                            
+
+                        {posts && (
                             <PostList
                                 posts={posts.map(post => ({
                                     ...post,
@@ -106,8 +116,8 @@ class Posts extends Component {
 
                         {!posts && <div>There are no posts ...</div>}
 
-                         
-                        
+
+
                     </div>
                 )}
             </AuthUserContext.Consumer>
@@ -115,4 +125,29 @@ class Posts extends Component {
     }
 }
 
-export default withFirebase(Posts);
+
+const mapStateToProps = state => ({
+    authUser: state.sessionState.authUser,
+    messages: Object.keys(state.messageState.messages || {}).map(
+      key => ({
+        ...state.messageState.messages[key],
+        uid: key,
+      }),
+    ),
+    limit: state.messageState.limit,
+  });
+  
+  const mapDispatchToProps = dispatch => ({
+    onSetMessages: posts =>
+      dispatch({ type: 'POSTS_SET', posts }),
+    onSetMessagesLimit: limit =>
+      dispatch({ type: 'POSTS_LIMIT_SET', limit }),
+  });
+
+export default compose(
+    withFirebase,
+    connect(
+      mapStateToProps,
+      mapDispatchToProps,
+    ),
+  )(Posts);

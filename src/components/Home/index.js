@@ -5,6 +5,7 @@ import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 import Posts  from '../Posts';
 
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
