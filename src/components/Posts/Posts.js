@@ -8,6 +8,7 @@ import PostList from './PostList';
 import SimpleReactValidator from 'simple-react-validator';
 
 import { Link } from 'react-router-dom';
+import withPost from './../../hoc/withPost';
 
 
 class Posts extends Component {
@@ -150,4 +151,5 @@ export default compose(
       mapStateToProps,
       mapDispatchToProps,
     ),
+    withPost
   )(Posts);

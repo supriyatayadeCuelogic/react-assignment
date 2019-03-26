@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 import Posts  from '../Posts';
+import Aux from './../../hoc/Aux';
 
 
 class HomePage extends Component {
@@ -29,10 +30,10 @@ class HomePage extends Component {
 
   render() {    
     return (
-      <div>
+      <Aux>
         <h1>Posts</h1>        
         <Posts users={this.state.users} />
-      </div>
+      </Aux>
     );
   }
 }
