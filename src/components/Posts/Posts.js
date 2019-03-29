@@ -95,6 +95,7 @@ class Posts extends Component {
         const { posts, loading } = this.state;
 
         return (
+            
             <AuthUserContext.Consumer>
                 {authUser => (
                     <div className="container">

@@ -8,22 +8,27 @@ class User extends Component {
         super(props);
 
         this.state = {
-            list: []
+            list: [],
+            loading:false,
         }
     }
 
     componentDidMount() {
+        if (!this.props.list) {
+            this.setState({ loading: true });
+        }
         axios.get('https://randomuser.me/api/?results=10&inc=name,registered&nat=fr')
             .then(json => {
-                this.setState({ list: json.data.results });
+                this.setState({ list: json.data.results ,loading:false});
                 console.log(json);
             })
     }
 
     render() {
-        const {list} = this.state;
+        const {list,loading} = this.state;
         return (
             <div>
+                {loading && <div>Loading ...</div>}
                 {list.map(item => (
                     <li key={item.registered.date}>{item.name.first + item.name.last}</li>
                 ))}

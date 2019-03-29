@@ -74,11 +74,11 @@ class AddPost extends Component {
                             <h1>Create new post</h1>
                             <label>Title</label>
                             <input type="text" className="form-control" name="title" value={title} onChange={this.onChangeText} required />
-                            {this.validator.message('title', this.state.title, 'required')}
+                            {this.validator.message('title', title, 'required')}
 
                             <label>Description</label>
                             <input type="text" className="form-control" name="description" value={description} onChange={this.onChangeDesc} required />
-                            {this.validator.message('description', this.state.description, 'required')}
+                            {this.validator.message('description', description, 'required')}
 
                             <label>Category</label>
                             <select onChange={this.onChangeCategory} className="form-control" name="category" value={category} required>
@@ -91,7 +91,7 @@ class AddPost extends Component {
                                 <option value="Machine">Machine</option>
                                 <option value="Learning">Learning</option>
                             </select>
-                            {this.validator.message('category', this.state.category, 'required')}
+                            {this.validator.message('category', category, 'required')}
 
                             <label>Status</label>
                             <select onChange={this.onChangeStatus} className="form-control" name="status" value={status} required>
@@ -99,7 +99,7 @@ class AddPost extends Component {
                                 <option value="Draft">Draft</option>
                                 <option value="Published">Published</option>
                             </select>
-                            {this.validator.message('status', this.state.status, 'required')}
+                            {this.validator.message('status', status, 'required')}
 
                             <button type="submit" className="btn btn-primary">Save</button>
                         </div>

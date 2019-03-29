@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link,NavLink } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
@@ -20,7 +20,7 @@ const NavigationAuth = ({ authUser }) => (
   <div>
     <ul className="flex-column">
       <li>
-        <Link to={ROUTES.HOME}>Manage Posts</Link>
+        <NavLink to={ROUTES.HOME}>Manage Posts</NavLink>
       </li>
       <li>
         <Link to={ROUTES.DASHBOARD}>Dashboard</Link>

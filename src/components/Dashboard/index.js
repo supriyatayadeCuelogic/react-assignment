@@ -34,4 +34,4 @@ export default compose(
     withFirebase,
     withEmailVerification,
     withAuthorization(condition),
-  )(DoughnutChrt,PieChart);
+  )(DoughnutChrt);

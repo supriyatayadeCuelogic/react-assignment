@@ -10,6 +10,7 @@ import HomePage from '../Home';
 import AddPost from './../Posts/AddPost';
 import DoughnutChrt from './../Dashboard';
 import User from './../User';
+import landingpage from './../Home/landingpage';
 
 
 import * as ROUTES from '../../constants/routes';
@@ -24,13 +25,13 @@ const App = () => (
       <hr />
 
       <Switch>
-      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route path={ROUTES.LANDING} component={HomePage} />
-      <Route path={ROUTES.HOME} component={HomePage} />
-      <Route path={ROUTES.NEW_POST} component={AddPost} />
-      <Route path={ROUTES.DASHBOARD} component={DoughnutChrt} />
-      <Route path={ROUTES.USER_LIST} component={User} />
+      <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+      <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+      <Route exact path={ROUTES.LANDING} component={landingpage} />
+      <Route exact path={ROUTES.HOME} component={HomePage} />
+      <Route exact path={ROUTES.NEW_POST} component={AddPost} />
+      <Route exact path={ROUTES.DASHBOARD} component={DoughnutChrt} />
+      <Route exact path={ROUTES.USER_LIST} component={User} />
       <Route component={NoMatch} />
       </Switch>
     </div>
